@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Hello World!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body>
+
+    <main class="h-screen bg-gradient-to-r from-purple-400 to-blue-600 flex items-center justify-center">
+        <div>
+            <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
+                <span id="typewriter"
+                    class="text-transparent bg-clip-text bg-gradient-to-tr to-yellow-400 from-slate-400">
+                </span>
+            </h1>
+            <div class="w-full h-full flex justify-center items-center">
+                <h1 class="text-4xl font-bold"></h1>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const words = ["Hello, World!", "Welcome to my website with Flask!"];
+        let i = 0;
+        let j = 0;
+        let currentWord = "";
+        let isDeleting = false;
+
+        function type() {
+            currentWord = words[i];
+            if (isDeleting) {
+                document.getElementById("typewriter").textContent = currentWord.substring(0, j - 1);
+                j--;
+                if (j == 0) {
+                    isDeleting = false;
+                    i++;
+                    if (i == words.length) {
+                        i = 0;
+                    }
+                }
+            } else {
+                document.getElementById("typewriter").textContent = currentWord.substring(0, j + 1);
+                j++;
+                if (j == currentWord.length) {
+                    isDeleting = true;
+                }
+            }
+            setTimeout(type, 100);
+        }
+
+        type();
+    </script>
+</body>
+
+</html>
