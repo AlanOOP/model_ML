@@ -25,11 +25,11 @@ def predict():
         
         # Crear un DataFrame con los datos
         data_df = pd.DataFrame([[abdomen, antena]], columns=['abdomen', 'antena'])
-        app.logger.debug(f'DataFrame creado: {data_df}')
+       
         
         # Realizar predicciones
         prediction = model.predict(data_df)
-        app.logger.debug(f'Predicción: {prediction[0]}')
+        
         
         # Devolver las predicciones como respuesta JSON
         return jsonify({'categoria': prediction[0]})
