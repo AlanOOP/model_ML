@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificador de Insectos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body class=" bg-gradient-to-r from-purple-400 to-blue-600">
+
+    <header class="">
+        <h1 class="text-center font-bold text-6xl my-10 text-slate-300">Clasificador de Insectos</h1>
+    </header>
+
+    <main class="container mx-auto">
+        <div class="max-w-lg mx-auto p-8 rounded-xl shadow bg-white shadow-slate-300 my-16 ">
+            <form id="formulario" class=" p-6 w-full gap-4 space-y-2">
+                <div>
+                    <label for="abdomen" class="w-4 h-4 border-slate-200 focus:bg-blue-600">Longitud del
+                        Abdomen:
+                    </label>
+                    <input type="text" id="abdomen" name="abdomen"
+                        class="w-full py-3 border border-slate-200 bg-slate-50 rounded-lg px-3 focus:outline-none my-2">
+                </div>
+                <div>
+                    <label for="antena" class="w-4 h-4 border-slate-200 focus:bg-blue-600 ">Longitud de las
+                        Antenas:
+                    </label>
+                    <input type="text" id="antena" name="antena"
+                        class="w-full py-3 border border-slate-200 bg-slate-50 rounded-lg px-3 focus:outline-none my-2">
+                </div>
+
+                <button type="submit"
+                    class="w-full py-3 font-medium text-white bg-blue-600 hover:bg-blue-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center transition-all hover:scale-110 ease-in-out duration-300 my-4">
+                    Enviar
+                </button>
+
+                <p id="resultado" class="text-center text-2xl font-bold text-green-400 pt-5"></p>
+
+            </form>
+        </div>
+    </main>
+
+    <footer class="text-center text-slate-200">
+        <p>Alan Alexis Hernandez Francisco 9 - A</p>
+    </footer>
+
+</body>
+
+<script>
+
+    const formulario = document.getElementById('formulario');
+
+    formulario.addEventListener('submit', (e) => {
+        clasificarInsecto(e);
+    });
+
+    const clasificarInsecto = async (e) => {
+        e.preventDefault();
+        const abdomen = document.getElementById('abdomen');
+        const antena = document.getElementById('antena');
+
+        await fetch('/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `abdomen=${abdomen.value}&antena=${antena.value}`,
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('resultado').innerText = 'Error: ' + data.error;
+                } else {
+                    document.getElementById('resultado').innerText = 'El insecto es una ' + data.categoria;
+                }
+            })
+            .catch(error => {
+                document.getElementById('resultado').innerText = 'Error en la solicitud.';
+                console.error('Error:', error);
+            });
+
+        abdomen.value = '';
+        antena.value = '';
+
+    }
+</script>
+
+</html>
